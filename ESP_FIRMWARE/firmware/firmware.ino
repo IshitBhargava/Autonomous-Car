@@ -464,12 +464,13 @@ void slowworkTask(void *pvParameters) {
       float a1 = adsScaled(1);
       float a2 = adsScaled(2);
       float a3 = adsScaled(3);
+      float t = 1.0f / (1.0f/298.15f + logf((31000.0f * a3) / ((100.0f - a3) * 100000.0f)) / 3950.0f) - 273.15f;
       xSemaphoreTake(serialMux, portMAX_DELAY);
       Serial.print("$ADC,");
       Serial.print(a0, 1); Serial.print(",");
       Serial.print(a1, 1); Serial.print(",");
       Serial.print(a2, 1); Serial.print(",");
-      Serial.println(a3, 1);
+      Serial.println(t, 1);
       xSemaphoreGive(serialMux);
     }
 
