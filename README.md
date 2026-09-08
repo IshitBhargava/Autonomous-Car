@@ -89,5 +89,5 @@ See [`Arduino Debug Console/README.md`](Arduino%20Debug%20Console/README.md) for
 ## Getting started
 
 1. **Flash firmware** — open `ESP_FIRMWARE/` in Arduino IDE, install bundled libraries from `ESP_FIRMWARE/libraries/`, and flash to the ESP32.
-2. **Set up the Pi** — follow `rPi software/README.md` to configure and then set up ROS2`.
+2. **Set up the Pi** — follow `rPi software/README.md` to configure and then set up `ROS2`.
 4. **Control** — use the `Debuggger.py` to send move commands and monitor sensor telemetry in real time.
