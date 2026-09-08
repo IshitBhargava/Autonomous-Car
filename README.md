@@ -49,7 +49,7 @@ Each subdirectory has its own README with setup instructions specific to that la
 | Component | Role |
 |---|---|
 | ESP32 (dual-core) | Main controller |
-| Raspberry Pi | Host — USB bridge, dashboard, network relay |
+| Raspberry Pi | Host — UART link, dashboard, ROS2 |
 | Mecanum wheels ×4 | Omnidirectional drive |
 | PCA9685 | 16-channel PWM driver for motor ESCs/drivers |
 | VL53L0X ×4 | Time-of-flight distance sensors (obstacle detection) |
@@ -74,6 +74,7 @@ See [`ESP_FIRMWARE/README.md`](ESP_FIRMWARE/README.md) for library dependencies 
 
 - ROS2
 - `Debugger.py` — PyQt5 GUI with live telemetry.
+- The directory also contains some more `py` files for debugging.
 
 See [`rPi software/README.md`](rPi%20software/README.md) for setup.
 
