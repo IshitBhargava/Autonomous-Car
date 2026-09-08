@@ -16,13 +16,13 @@ The platform integrates real-time sensor fusion, obstacle avoidance, and remote 
 │  • Runs ROS2                                            |
 |  • Takes USB Camera Feed                                │
 └────────────────────┬────────────────────────────────────┘
-                     │ USB serial  ($MOVE / $OBSTACLE / …)
+                     │ PL011 UART  ($MOVE / $OBSTACLE / …)
 ┌────────────────────▼────────────────────────────────────┐
 │                   ESP32 (ESP_FIRMWARE)                  │
 │  • FreeRTOS dual-core task architecture                 │
 │  • PCA9685 PWM → 4× mecanum wheel motors                │
 │  • 4× VL53L0X ToF (front/rear/left/right)               │
-│  • MPU6050 IMU — tilt compensation via rotation matrix  │
+│  • MPU6050 IMU                                          │
 │  • TCS34725 colour sensor                               │
 │  • ADS1115 ADC                                          │
 │  • Obstacle avoider + $MOVE/$ROTATE serial protocol     │
@@ -36,7 +36,7 @@ The platform integrates real-time sensor fusion, obstacle avoidance, and remote 
 | Directory | Description |
 |---|---|
 | [`ESP_FIRMWARE/`](ESP_FIRMWARE/) | Arduino firmware for the ESP32. FreeRTOS tasks, sensor drivers, serial command parser, obstacle avoidance logic. |
-| [`rPi software/`](rPi%20software/) | Raspberry Pi host scripts. PL011 UART, ROS, telemetry dashboard (`serial_dashboard.py`). |
+| [`rPi software/`](rPi%20software/) | Raspberry Pi host scripts, ROS, telemetry dashboard (`serial_dashboard.py`). |
 | [`Arduino Debug Console/`](Arduino%20Debug%20Console/) | Lightweight serial debug console for direct Raspberry Pi interaction during development. |
 | [`images/`](images/) | Photos and diagrams of the physical build. |
 
@@ -63,7 +63,7 @@ Each subdirectory has its own README with setup instructions specific to that la
 
 - **FreeRTOS** dual-core operation — motion control and sensing run as separate tasks pinned to independent cores.
 - **Serial protocol:** `$MOVE,x-speed,y-speed,rot-speed` for full omnidirectional control; `$ROTATE` for in-place turns; `$OBSTACLE` messages sent back to host when proximity thresholds trigger.
-- **I2C bus management:** all sensors share the `Wire` bus (there are 2 different buses for the high-speed stuff and the relatively-slow stuff
+- **I2C bus management:** all sensors share the `Wire` bus (there are 2 different buses for the high-speed stuff and the relatively-slow stuff).
 - **Obstacle avoider:** configurable stop-threshold (`$STOPTHRES`) per direction.
 
 See [`ESP_FIRMWARE/README.md`](ESP_FIRMWARE/README.md) for library dependencies and build instructions.
