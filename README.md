@@ -35,9 +35,9 @@ The platform integrates real-time sensor fusion, obstacle avoidance, and remote 
 
 | Directory | Description |
 |---|---|
-| [`ESP_FIRMWARE/`](ESP_FIRMWARE/) | Arduino/PlatformIO firmware for the ESP32. FreeRTOS tasks, sensor drivers, serial command parser, obstacle avoidance logic. |
-| [`rPi software/`](rPi%20software/) | Raspberry Pi host scripts. USB auto-detection, IP/serial bridging, PyQt5 telemetry dashboard (`serial_dashboard.py`). |
-| [`Arduino Debug Console/`](Arduino%20Debug%20Console/) | Lightweight serial debug console for direct ESP32 interaction during development. |
+| [`ESP_FIRMWARE/`](ESP_FIRMWARE/) | Arduino firmware for the ESP32. FreeRTOS tasks, sensor drivers, serial command parser, obstacle avoidance logic. |
+| [`rPi software/`](rPi%20software/) | Raspberry Pi host scripts. PL011 UART, ROS, telemetry dashboard (`serial_dashboard.py`). |
+| [`Arduino Debug Console/`](Arduino%20Debug%20Console/) | Lightweight serial debug console for direct Raspberry Pi interaction during development. |
 | [`images/`](images/) | Photos and diagrams of the physical build. |
 
 Each subdirectory has its own README with setup instructions specific to that layer.
@@ -73,8 +73,7 @@ See [`ESP_FIRMWARE/README.md`](ESP_FIRMWARE/README.md) for library dependencies 
 
 ## Host software (rPi software)
 
-- Auto-detects connected Arduino/ESP32 devices on USB at startup.
-- Exposes serial data over the network and relays IP information back to the microcontroller.
+- ROS2
 - `serial_dashboard.py` — PyQt5 GUI with live telemetry.
 
 See [`rPi software/README.md`](rPi%20software/README.md) for setup.
@@ -83,15 +82,12 @@ See [`rPi software/README.md`](rPi%20software/README.md) for setup.
 
 ## Debug console (Arduino Debug Console)
 
-A minimal serial console for interacting with the ESP32 directly without the full dashboard. Useful during firmware bring-up and sensor calibration.
-
 See [`Arduino Debug Console/README.md`](Arduino%20Debug%20Console/README.md) for usage.
 
 ---
 
 ## Getting started
 
-1. **Flash firmware** — open `ESP_FIRMWARE/` in PlatformIO or Arduino IDE, install bundled libraries from `ESP_FIRMWARE/libraries/`, and flash to the ESP32.
-2. **Set up the Pi** — follow `rPi software/README.md` to configure the virtual environment and run `serial_dashboard.py`.
-3. **Connect** — power the car, connect the Pi to the ESP32 via USB; the host script auto-detects the port.
-4. **Control** — use the dashboard to send move commands and monitor sensor telemetry in real time.
+1. **Flash firmware** — open `ESP_FIRMWARE/` in Arduino IDE, install bundled libraries from `ESP_FIRMWARE/libraries/`, and flash to the ESP32.
+2. **Set up the Pi** — follow `rPi software/README.md` to configure and then set up ROS2`.
+4. **Control** — use the `Debuggger.py` to send move commands and monitor sensor telemetry in real time.
