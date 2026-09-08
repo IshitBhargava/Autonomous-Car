@@ -24,7 +24,7 @@
 | Beep | `$BEEP,<freq>,<dur>` | `$BEEP,1000,200` | Freq: 50–15000 Hz, Dur: >0 ms |
 | Servo | `$SERVO,<ch>,<angle>,<mode>,<speed>` | `$SERVO,2,135,1,100` | Ch: 0–15, Angle: 0–180°, Mode: 1/2/3, Speed: positive integer  |
 | Move | `$MOVE,<x>,<y>,<rotate>` | `$MOVE,50,-30,0` | X, Y, rotate: -100 to +100 |
-
+| Stopping Threshold | `$STOPTHRES,<dist>` | `$STOPTHRES,50` | 0 to 3500; adjusts distance for emergency stopping |
 ---
 
 **Servo Modes**
