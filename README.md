@@ -66,7 +66,7 @@ Each subdirectory has its own README with setup instructions specific to that la
 - **I2C bus management:** all sensors share the `Wire` bus (there are 2 different buses for the high-speed stuff and the relatively-slow stuff
 - **Obstacle avoider:** configurable stop-threshold (`$STOPTHRES`) per direction.
 
-See [`ESP_FIRMWARE/README.md`](ESP_FIRMWARE/Libraries/README.md) for library dependencies and build instructions.
+See [`ESP_FIRMWARE/README.md`](ESP_FIRMWARE/README.md) for library dependencies and build instructions.
 
 ---
 
