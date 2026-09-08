@@ -63,18 +63,17 @@ Each subdirectory has its own README with setup instructions specific to that la
 
 - **FreeRTOS** dual-core operation — motion control and sensing run as separate tasks pinned to independent cores.
 - **Serial protocol:** `$MOVE,x-speed,y-speed,rot-speed` for full omnidirectional control; `$ROTATE` for in-place turns; `$OBSTACLE` messages sent back to host when proximity thresholds trigger.
-- **I2C bus management:** all sensors share the `Wire` bus with priority scheduling to prevent starvation; VL53L0X sensors use direct register access to avoid blocking library reads.
-- **IMU tilt compensation:** rotation-matrix-based correction on live gyro/accel data.
+- **I2C bus management:** all sensors share the `Wire` bus (there are 2 different buses for the high-speed stuff and the relatively-slow stuff
 - **Obstacle avoider:** configurable stop-threshold (`$STOPTHRES`) per direction.
 
-See [`ESP_FIRMWARE/README.md`](ESP_FIRMWARE/README.md) for library dependencies and build instructions.
+See [`ESP_FIRMWARE/README.md`](ESP_FIRMWARE/Libraries/README.md) for library dependencies and build instructions.
 
 ---
 
 ## Host software (rPi software)
 
 - ROS2
-- `serial_dashboard.py` — PyQt5 GUI with live telemetry.
+- `Debugger.py` — PyQt5 GUI with live telemetry.
 
 See [`rPi software/README.md`](rPi%20software/README.md) for setup.
 
