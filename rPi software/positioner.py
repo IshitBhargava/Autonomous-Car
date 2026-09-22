@@ -9,10 +9,10 @@ front_index = 1
 right_index = 3
 left_index = 0
 
-left_offset = 0
-right_offset = 0
-front_offset = 0
-back_offset = 0
+left_offset= 125.25
+right_offset = 125.25
+front_offset = 117
+back_offset = 177.5
 
 theta_calib=0
 
@@ -37,7 +37,8 @@ carParser.init('/dev/ttyAMA0', 921600)
 for i in range(1000):
    imu= carParser.getIMU()
    theta+=imu[8]
-   theta_calib/=theta/1000
+
+theta_calib=theta/1000
 
 
 def test_dists():
