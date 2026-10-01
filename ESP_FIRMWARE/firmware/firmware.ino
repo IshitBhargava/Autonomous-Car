@@ -58,6 +58,7 @@ float lastGX = 0, lastGY = 0, lastGZ = 0;
 float lastAX = 0, lastAY = 0, lastAZ = 0;
 float rollOffset = 0;
 float pitchOffset = 0;
+float upX = 0, upY = 0, upZ = 1;   // "up" in sensor frame, from calibration
 volatile float VX=0;   // only ever touched from core 1 (fastwork/driveMecanum) in this split
 volatile float VY=0;   // no cross-core mutex needed, but kept volatile for safety
 volatile float SPEED=0;
@@ -129,9 +130,8 @@ void mpuReadRaw(int16_t &ax, int16_t &ay, int16_t &az, int16_t &gx, int16_t &gy,
 }
 
 void mpu6050Calibrate() {
-  // runs only during setup(), single-threaded
-  Serial.println("Calibrating gyro, keep still...");
   long sx = 0, sy = 0, sz = 0;
+  long sax = 0, say = 0, saz = 0;   // added
   const int N = 500;
   int16_t ax, ay, az, gx, gy, gz;
   double sAccRoll = 0, sAccPitch = 0;
@@ -139,6 +139,7 @@ void mpu6050Calibrate() {
   for(int i = 0; i < N; i++){
       mpuReadRaw(ax, ay, az, gx, gy, gz);
       sx += gx; sy += gy; sz += gz;
+      sax += ax; say += ay; saz += az;   // added
 
       float axg = ax / ACC_SENS;
       float ayg = ay / ACC_SENS;
@@ -155,7 +156,15 @@ void mpu6050Calibrate() {
   rollOffset  = sAccRoll  / N;
   pitchOffset = sAccPitch / N;
 
-  Serial.println("Calibration done.");
+  // added: normalized "up" direction in sensor frame
+  float avgAx = sax / (float)N;
+  float avgAy = say / (float)N;
+  float avgAz = saz / (float)N;
+  float mag = sqrt(avgAx*avgAx + avgAy*avgAy + avgAz*avgAz);
+  upX = avgAx / mag;
+  upY = avgAy / mag;
+  upZ = avgAz / mag;
+
 }
 
 void mpu6050Update() {
@@ -189,7 +198,9 @@ void mpu6050Update() {
 
   roll  = ALPHA * (roll  + gxds * dt) + (1 - ALPHA) * accRoll;
   pitch = ALPHA * (pitch + gyds * dt) + (1 - ALPHA) * accPitch;
-  yaw   += gzds * dt;
+  // yaw += gzds * dt;   // old: raw gz, sensitive to mount tilt
+  float yawRate = gxds*upX + gyds*upY + gzds*upZ;   // gyro projected onto true vertical
+  yaw += yawRate * dt;
 }
 
 void buttonPoll() {
@@ -352,6 +363,10 @@ void processCommand(char *line) {
     char *STR = strtok(NULL, ",");
     if (!STR) return;
     STOP_THRES = constrain((float)atof(STR), 0.0, 3500.0);
+  } else if (strcmp(tok, "$RESET") == 0){
+    Serial.flush();
+    delay(10);
+    ESP.restart();
   }
 }
 
